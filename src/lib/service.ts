@@ -35,7 +35,7 @@ export const getChatResponse = async ({
   }
 };
 
-export const getModels = async (): Promise<Model[]> => {
+export const getModelsAPI = async (): Promise<Model[]> => {
   const response = await fetch(`${API_URL}/tags`);
   const data = await response.json();
   return data.models;

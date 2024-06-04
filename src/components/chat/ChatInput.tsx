@@ -5,7 +5,7 @@ import SystemMessage from '../chatOptions/SystemMessage.tsx';
 import { useEffect, useState } from 'react';
 import { Model, Options } from '../../lib/types.ts';
 import Models from '../chatOptions/Models.tsx';
-import { getModels } from '../../lib/service.ts';
+import { getModelsAPI } from '../../lib/service.ts';
 import {
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
@@ -23,14 +23,38 @@ const ChatInput = () => {
     INITIAL_SYSTEM_MESSAGE
   );
 
+  const initSettings = async () => {
+    const modelList = await getModelsAPI();
+    setModels(modelList);
+    setSelectedModel(modelList[0]);
+
+    const storedOptions = localStorage.getItem('options');
+    if (storedOptions) {
+      setOptions(JSON.parse(storedOptions));
+    } else {
+      localStorage.setItem('options', JSON.stringify(INITIAL_OPTIONS));
+      setOptions(INITIAL_OPTIONS);
+    }
+
+    const storedSystemMessage = localStorage.getItem('systemMessage');
+    if (storedSystemMessage) {
+      setSystemMessage(JSON.parse(storedSystemMessage));
+    } else {
+      localStorage.setItem(
+        'systemMessage',
+        JSON.stringify(INITIAL_SYSTEM_MESSAGE)
+      );
+      setSystemMessage(INITIAL_SYSTEM_MESSAGE);
+    }
+  };
+
   const handleSettingButton = async () => {
-    setModels(await getModels());
     setShowSettings(!showSettings);
   };
 
   useEffect(() => {
-    setSelectedModel(models[0]);
-  }, [models]);
+    void initSettings();
+  }, []);
 
   return (
     <div className='fixed bottom-6 flex w-full flex-row items-end justify-between pe-16'>

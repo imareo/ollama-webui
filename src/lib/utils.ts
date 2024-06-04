@@ -1,18 +1,4 @@
-import { INITIAL_OPTIONS, INITIAL_SYSTEM_MESSAGE } from './constants.ts';
-
 export const getShortName = (model?: string) => model?.split(':')[0];
-
-export const initLocalStorage = () => {
-  if (!localStorage.getItem('options')) {
-    localStorage.setItem('options', JSON.stringify(INITIAL_OPTIONS));
-  }
-  if (!localStorage.getItem('systemPrompt')) {
-    localStorage.setItem(
-      'systemPrompt',
-      JSON.stringify(INITIAL_SYSTEM_MESSAGE)
-    );
-  }
-};
 
 export const getInfo = (part: any) => {
   const tokenRate = (

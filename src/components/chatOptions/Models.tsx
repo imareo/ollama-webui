@@ -11,7 +11,6 @@ const Models = (props: Props) => {
   const { models, selectedModel, setSelectedModel } = props;
 
   const handleModelChange = (model: Model) => () => {
-    console.log(model);
     setSelectedModel(model);
   };
 
