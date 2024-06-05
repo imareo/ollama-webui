@@ -17,9 +17,9 @@ export type Options = {
 
 export type ChatRequest = {
   model: string;
-  messages: ChatMessage[];
   options: Options;
-  setAnswer: (text: string) => void;
+  history: HistoryMessage[];
+  setHistory: (history: HistoryMessage[]) => void;
   controller: AbortController;
 };
 
@@ -30,15 +30,4 @@ export type Model = {
     parameter_size: string;
     quantization_level: string;
   };
-};
-
-export type ChatHistory = {
-  history: HistoryMessage[];
-  addToHistory: (messages: ChatMessage) => void;
-};
-
-export type ReceivedMessage = {
-  message: string;
-  changeMessage: (chunk: string) => void;
-  clearMessage: () => void;
 };

@@ -1,23 +1,30 @@
 import { API_URL } from './constants.ts';
 import { ChatRequest, Model } from './types.ts';
+import { getInfo } from './utils.ts';
 
 export const getChatResponse = async ({
   model,
-  messages,
   options,
-  setAnswer,
+  history,
+  setHistory,
   controller,
 }: ChatRequest): Promise<void> => {
+  const messages = history.slice(0, -1);
+  const requestMessage = messages.map((message) => message.message);
+  let [lastMessage] = history.slice(-1);
+
   const stream = await fetch(`${API_URL}/chat`, {
     method: 'POST',
     body: JSON.stringify({
       model,
-      messages,
+      messages: requestMessage,
       options,
       stream: true,
     }),
     signal: controller.signal,
   });
+
+  let response: any;
 
   const reader = stream.body?.getReader();
   if (reader) {
@@ -28,10 +35,19 @@ export const getChatResponse = async ({
       if (done) break;
 
       const decoder = new TextDecoder().decode(value);
-      const json = JSON.parse(decoder);
-      chatResponse = `${chatResponse}${json.message.content}`;
-      setAnswer(chatResponse);
+      response = JSON.parse(decoder);
+      chatResponse = `${chatResponse}${response.message.content}`;
+      lastMessage = {
+        ...lastMessage,
+        message: {
+          content: chatResponse,
+          role: lastMessage.message.role,
+          images: lastMessage.message?.images,
+        },
+      };
+      setHistory([...messages, lastMessage]);
     }
+    setHistory([...messages, { ...lastMessage, info: getInfo(response) }]);
   }
 };
 

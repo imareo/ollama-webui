@@ -2,17 +2,25 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Temperature from '../chatOptions/Temperature.tsx';
 import ContextSize from '../chatOptions/ContextSize.tsx';
 import SystemMessage from '../chatOptions/SystemMessage.tsx';
-import { useEffect, useState } from 'react';
-import { Model, Options } from '../../lib/types.ts';
+import { useContext, useEffect, useState } from 'react';
+import {
+  ChatRequest,
+  HistoryMessage,
+  Model,
+  Options,
+} from '../../lib/types.ts';
 import Models from '../chatOptions/Models.tsx';
-import { getModelsAPI } from '../../lib/service.ts';
+import { getChatResponse, getModelsAPI } from '../../lib/service.ts';
 import {
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
 } from '../../lib/constants.ts';
 import { getShortName } from '../../lib/utils.ts';
+import HistoryContext from '../../context/HistoryContext.ts';
+import { nanoid } from 'nanoid';
 
 const ChatInput = () => {
+  const { history, setHistory } = useContext(HistoryContext);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [models, setModels] = useState<Model[]>([]);
   const [selectedModel, setSelectedModel] = useState<Model | undefined>(
@@ -22,6 +30,8 @@ const ChatInput = () => {
   const [systemMessage, setSystemMessage] = useState<string>(
     INITIAL_SYSTEM_MESSAGE
   );
+  const [userMessage, setUserMessage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const initSettings = async () => {
     const modelList = await getModelsAPI();
@@ -48,6 +58,50 @@ const ChatInput = () => {
     }
   };
 
+  const handleInputChange = async (event: any) => {
+    setUserMessage(event.target.value);
+  };
+
+  const handleSendButton = () => {
+    setIsLoading(true);
+
+    const systemChatMessage: HistoryMessage = {
+      id: nanoid(),
+      message: { content: systemMessage, role: 'system' },
+      info: '',
+    };
+    const userChatMessage: HistoryMessage = {
+      id: nanoid(),
+      message: { content: userMessage, role: 'user' },
+      info: '',
+    };
+    const emptyChatMessage: HistoryMessage = {
+      id: nanoid(),
+      message: { content: '', role: 'assistant' },
+      info: '',
+    };
+
+    const newHistory: HistoryMessage[] =
+      history.length === 0 && systemMessage !== ''
+        ? [systemChatMessage, userChatMessage, emptyChatMessage]
+        : [...history, userChatMessage, emptyChatMessage];
+
+    setHistory(newHistory);
+    setUserMessage('');
+
+    if (selectedModel) {
+      const request: ChatRequest = {
+        model: selectedModel.model,
+        options,
+        history: newHistory,
+        setHistory,
+        controller: new AbortController(),
+      };
+      void getChatResponse(request);
+      setIsLoading(false);
+    }
+  };
+
   const handleSettingButton = async () => {
     setShowSettings(!showSettings);
   };
@@ -63,12 +117,15 @@ const ChatInput = () => {
         className='me-1.5 flex-auto resize-none rounded-3xl border-2 px-4 py-2'
         maxRows={10}
         placeholder={`Ask model ${getShortName(selectedModel?.name)}, temp: ${options?.temperature}, ctx: ${options?.num_ctx}`}
+        value={userMessage}
+        onChange={(event) => handleInputChange(event)}
       />
       <button
         className='me-1.5 h-11 rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow hover:bg-blue-700'
-        disabled
+        onClick={handleSendButton}
+        disabled={isLoading || userMessage.length === 0}
       >
-        send
+        {!isLoading ? 'Send' : 'Stop'}
       </button>
       <button
         type='button'
@@ -109,5 +166,4 @@ const ChatInput = () => {
     </div>
   );
 };
-
 export default ChatInput;
