@@ -7,6 +7,7 @@ const SystemMessage = (props: Props) => {
   const { systemMessage, setSystemMessage } = props;
   const handleSystemMessageChange = (event: any) => {
     setSystemMessage(event.target.value);
+    localStorage.setItem('systemMessage', JSON.stringify(systemMessage));
   };
 
   return (

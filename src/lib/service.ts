@@ -42,11 +42,11 @@ export const getChatResponse = async ({
         message: {
           content: chatResponse,
           role: lastMessage.message.role,
-          images: lastMessage.message?.images,
         },
       };
       setHistory([...messages, lastMessage]);
     }
+    // after receive stream done can add info with stats
     setHistory([...messages, { ...lastMessage, info: getInfo(response) }]);
   }
 };

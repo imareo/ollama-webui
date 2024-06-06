@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import HistoryContext from '../../context/HistoryContext.ts';
-import OneMessage from './oneMessage.tsx';
+import UserMessage from './UserMessage.tsx';
+import AssistantMessage from './AssistantMessage.tsx';
 
 const ChatHistory = () => {
   const { history } = useContext(HistoryContext);
@@ -8,9 +9,14 @@ const ChatHistory = () => {
   return (
     <div>
       {history.length > 0 &&
-        history.map((message, index) => (
-          <div key={index}>
-            <OneMessage message={message} />
+        history.map((message) => (
+          <div className='mb-2 grid grid-cols-12' key={message.id}>
+            {message.message.role === 'user' && (
+              <UserMessage message={message} />
+            )}
+            {message.message.role === 'assistant' && (
+              <AssistantMessage message={message} />
+            )}
           </div>
         ))}
     </div>
