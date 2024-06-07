@@ -1,15 +1,43 @@
 import { HistoryMessage } from '../../lib/types.ts';
 import Markdown from 'react-markdown';
+import { TiDeleteOutline } from 'react-icons/ti';
+import { TbCopy } from 'react-icons/tb';
 
 type Props = { message: HistoryMessage };
 const AssistantMessage = (props: Props) => {
   const { message } = props;
+
+  const handleCopyMessage = (content: string) => async () => {
+    try {
+      await navigator.clipboard.writeText(content);
+      // dispatch(setError({ message: 'copied to clipboard', type: 'info' }));
+    } catch (error) {
+      // dispatch(
+      //   setError({ message: 'failed copying to clipboard', type: 'error' })
+      // );
+    }
+  };
+
   return (
-    <div className='col-span-11 rounded-xl bg-green-50 p-5'>
-      <Markdown className='prose max-w-none'>
+    <div className='col-span-11 rounded-xl bg-green-50 p-2'>
+      <Markdown className='prose max-w-none px-3 pt-3'>
         {message.message.content}
       </Markdown>
-      <div className='text-end text-xs'>{message.info}</div>
+      <div className='flex pt-2 text-end text-slate-500'>
+        <div className='grow justify-start self-center pl-1 text-start text-sm'>
+          {message.info}
+        </div>
+        <TbCopy
+          className='flextext-secondary fw-light ml-2 text-2xl'
+          title='Copy message'
+          onClick={handleCopyMessage(message.message.content)}
+        />
+        <TiDeleteOutline
+          className='text-secondary fw-light justify-end text-2xl'
+          title='Delete message'
+          // onClick={handleDeleteMessage(message.id)}
+        />
+      </div>
     </div>
   );
 };

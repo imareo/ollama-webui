@@ -62,7 +62,7 @@ const ChatInput = () => {
     setUserMessage(event.target.value);
   };
 
-  const handleSendButton = () => {
+  const handleSendButton = async () => {
     setIsLoading(true);
 
     const systemChatMessage: HistoryMessage = {
@@ -97,7 +97,7 @@ const ChatInput = () => {
         setHistory,
         controller: new AbortController(),
       };
-      void getChatResponse(request);
+      await getChatResponse(request);
       setIsLoading(false);
     }
   };

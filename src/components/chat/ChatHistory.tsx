@@ -7,7 +7,7 @@ const ChatHistory = () => {
   const { history } = useContext(HistoryContext);
 
   return (
-    <div>
+    <div className='pb-10'>
       {history.length > 0 &&
         history.map((message) => (
           <div className='mb-2 grid grid-cols-12' key={message.id}>
