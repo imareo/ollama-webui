@@ -1,6 +1,8 @@
 import { HistoryMessage } from '../../lib/types.ts';
 import { TbCopy, TbReload } from 'react-icons/tb';
 import { TiDeleteOutline } from 'react-icons/ti';
+import { useContext } from 'react';
+import historyContext from '../../context/HistoryContext.ts';
 
 type Props = {
   message: HistoryMessage;
@@ -8,11 +10,23 @@ type Props = {
 
 const UserMessage = (props: Props) => {
   const { message } = props;
+  const { history, setHistory } = useContext(historyContext);
 
   const handleCopyMessage = (content: string) => async () => {
     try {
       await navigator.clipboard.writeText(content);
     } catch (error) {}
+  };
+
+  const handleDeleteMessage = (id: string) => async () => {
+    setHistory(history.filter((message) => message.id !== id));
+  };
+
+  const handleReloadChat = (id: string) => async () => {
+    const indexLastMessage = history.findIndex((message) => message.id === id);
+    if (indexLastMessage > 0) {
+      setHistory(history.slice(0, indexLastMessage));
+    }
   };
 
   return (
@@ -30,12 +44,12 @@ const UserMessage = (props: Props) => {
         <TbReload
           className='text-secondary fw-light text-2xl'
           title='Clear below and ask again from here'
-          // onClick={handleReloadChat(message.id, message.content)}
+          onClick={handleReloadChat(message.id)}
         />
         <TiDeleteOutline
           className='text-secondary fw-light justify-end text-2xl'
           title='Delete message'
-          // onClick={handleDeleteMessage(message.id)}
+          onClick={handleDeleteMessage(message.id)}
         />
       </div>
     </div>

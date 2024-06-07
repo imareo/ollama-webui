@@ -2,20 +2,22 @@ import { HistoryMessage } from '../../lib/types.ts';
 import Markdown from 'react-markdown';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { TbCopy } from 'react-icons/tb';
+import { useContext } from 'react';
+import historyContext from '../../context/HistoryContext.ts';
 
 type Props = { message: HistoryMessage };
 const AssistantMessage = (props: Props) => {
   const { message } = props;
+  const { history, setHistory } = useContext(historyContext);
 
   const handleCopyMessage = (content: string) => async () => {
     try {
       await navigator.clipboard.writeText(content);
-      // dispatch(setError({ message: 'copied to clipboard', type: 'info' }));
-    } catch (error) {
-      // dispatch(
-      //   setError({ message: 'failed copying to clipboard', type: 'error' })
-      // );
-    }
+    } catch (error) {}
+  };
+
+  const handleDeleteMessage = (id: string) => async () => {
+    setHistory(history.filter((message) => message.id !== id));
   };
 
   return (
@@ -35,7 +37,7 @@ const AssistantMessage = (props: Props) => {
         <TiDeleteOutline
           className='text-secondary fw-light justify-end text-2xl'
           title='Delete message'
-          // onClick={handleDeleteMessage(message.id)}
+          onClick={handleDeleteMessage(message.id)}
         />
       </div>
     </div>
