@@ -75,16 +75,11 @@ const ChatInput = () => {
       message: { content: userMessage, role: 'user' },
       info: '',
     };
-    const emptyChatMessage: HistoryMessage = {
-      id: nanoid(),
-      message: { content: '', role: 'assistant' },
-      info: '',
-    };
 
     const newHistory: HistoryMessage[] =
       history.length === 0 && systemMessage !== ''
-        ? [systemChatMessage, userChatMessage, emptyChatMessage]
-        : [...history, userChatMessage, emptyChatMessage];
+        ? [systemChatMessage, userChatMessage]
+        : [...history, userChatMessage];
 
     setHistory(newHistory);
     setUserMessage('');

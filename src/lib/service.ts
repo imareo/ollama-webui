@@ -1,6 +1,7 @@
 import { API_URL } from './constants.ts';
-import { ChatRequest, Model } from './types.ts';
+import { ChatRequest, HistoryMessage, Model } from './types.ts';
 import { getInfo } from './utils.ts';
+import { nanoid } from 'nanoid';
 
 export const getChatResponse = async ({
   model,
@@ -9,20 +10,24 @@ export const getChatResponse = async ({
   setHistory,
   controller,
 }: ChatRequest): Promise<void> => {
-  const messages = history.slice(0, -1);
-  const requestMessage = messages.map((message) => message.message);
-  let [lastMessage] = history.slice(-1);
+  const messages = history.map((message) => message.message);
 
   const stream = await fetch(`${API_URL}/chat`, {
     method: 'POST',
     body: JSON.stringify({
       model,
-      messages: requestMessage,
+      messages,
       options,
       stream: true,
     }),
     signal: controller.signal,
   });
+
+  let lastMessage: HistoryMessage = {
+    id: nanoid(),
+    message: { content: '', role: 'assistant' },
+    info: '',
+  };
 
   let response: any;
 
@@ -44,10 +49,10 @@ export const getChatResponse = async ({
           role: lastMessage.message.role,
         },
       };
-      setHistory([...messages, lastMessage]);
+      setHistory([...history, lastMessage]);
     }
     // after receive stream done can add info with stats
-    setHistory([...messages, { ...lastMessage, info: getInfo(response) }]);
+    setHistory([...history, { ...lastMessage, info: getInfo(response) }]);
   }
 };
 
