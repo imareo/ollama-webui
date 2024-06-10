@@ -1,6 +1,5 @@
 import { HistoryMessage } from '../../lib/types.ts';
-import { TbCopy, TbReload } from 'react-icons/tb';
-import { TiDeleteOutline } from 'react-icons/ti';
+import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
 import historyContext from '../../context/HistoryContext.ts';
 
@@ -46,7 +45,7 @@ const UserMessage = (props: Props) => {
           title='Clear below and ask again from here'
           onClick={handleReloadChat(message.id)}
         />
-        <TiDeleteOutline
+        <TbSquareRoundedX
           className='text-secondary fw-light justify-end text-2xl'
           title='Delete message'
           onClick={handleDeleteMessage(message.id)}

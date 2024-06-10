@@ -10,7 +10,11 @@ import {
   Options,
 } from '../../lib/types.ts';
 import Models from '../chatOptions/Models.tsx';
-import { getChatResponse, getModelsAPI } from '../../lib/service.ts';
+import {
+  getChatResponse,
+  getModelsAPI,
+  getVramPercent,
+} from '../../lib/service.ts';
 import {
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
@@ -93,6 +97,7 @@ const ChatInput = () => {
         controller: new AbortController(),
       };
       await getChatResponse(request);
+      console.log(await getVramPercent());
       setIsLoading(false);
     }
   };
@@ -116,7 +121,7 @@ const ChatInput = () => {
         onChange={(event) => handleInputChange(event)}
       />
       <button
-        className='me-1.5 h-11 rounded-full bg-blue-500 px-4 py-2 font-bold text-white shadow hover:bg-blue-700'
+        className={`me-1.5 h-11 rounded-full px-4 py-2 font-bold text-white shadow ${!isLoading ? 'bg-blue-500 hover:bg-blue-700' : 'bg-red-500 hover:bg-red-700'}`}
         onClick={handleSendButton}
         disabled={isLoading || userMessage.length === 0}
       >

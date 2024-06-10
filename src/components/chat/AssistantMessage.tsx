@@ -1,7 +1,6 @@
 import { HistoryMessage } from '../../lib/types.ts';
 import Markdown from 'react-markdown';
-import { TiDeleteOutline } from 'react-icons/ti';
-import { TbCopy } from 'react-icons/tb';
+import { TbCopy, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
 import historyContext from '../../context/HistoryContext.ts';
 
@@ -34,7 +33,7 @@ const AssistantMessage = (props: Props) => {
           title='Copy message'
           onClick={handleCopyMessage(message.message.content)}
         />
-        <TiDeleteOutline
+        <TbSquareRoundedX
           className='text-secondary fw-light justify-end text-2xl'
           title='Delete message'
           onClick={handleDeleteMessage(message.id)}

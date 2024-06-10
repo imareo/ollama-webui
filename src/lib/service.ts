@@ -61,3 +61,10 @@ export const getModelsAPI = async (): Promise<Model[]> => {
   const data = await response.json();
   return data.models;
 };
+
+export const getVramPercent = async (): Promise<number> => {
+  const response = await fetch(`${API_URL}/ps`);
+  const data = await response.json();
+  const model = data.models[0];
+  return Math.round((model.size_vram * 100) / model.size);
+};
