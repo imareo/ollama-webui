@@ -51,8 +51,9 @@ export const getChatResponse = async ({
       };
       setHistory([...history, lastMessage]);
     }
+    const info = `${getInfo(response)}, vram: ${await getVramPercent()}%`;
     // after receive stream done can add info with stats
-    setHistory([...history, { ...lastMessage, info: getInfo(response) }]);
+    setHistory([...history, { ...lastMessage, info }]);
   }
 };
 

@@ -10,11 +10,7 @@ import {
   Options,
 } from '../../lib/types.ts';
 import Models from '../chatOptions/Models.tsx';
-import {
-  getChatResponse,
-  getModelsAPI,
-  getVramPercent,
-} from '../../lib/service.ts';
+import { getChatResponse, getModelsAPI } from '../../lib/service.ts';
 import {
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
@@ -98,7 +94,6 @@ const ChatInput = () => {
         controller: new AbortController(),
       };
       await getChatResponse(request);
-      console.log(await getVramPercent());
       setIsLoading(false);
     }
   };
