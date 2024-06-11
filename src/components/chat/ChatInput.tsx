@@ -22,6 +22,8 @@ import { useOutsideClick } from '../../lib/hooks.tsx';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
 
+let controller: AbortController;
+
 const ChatInput = () => {
   const { history, setHistory } = useContext(HistoryContext);
   const [showSettings, setShowSettings] = useState<boolean>(false);
@@ -37,27 +39,31 @@ const ChatInput = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const initSettings = async () => {
-    const modelList = await getModelsAPI();
-    setModels(modelList);
-    setSelectedModel(modelList[0]);
+    try {
+      const modelList = await getModelsAPI();
+      setModels(modelList);
+      setSelectedModel(modelList[0]);
 
-    const storedOptions = localStorage.getItem('options');
-    if (storedOptions) {
-      setOptions(JSON.parse(storedOptions));
-    } else {
-      localStorage.setItem('options', JSON.stringify(INITIAL_OPTIONS));
-      setOptions(INITIAL_OPTIONS);
-    }
+      const storedOptions = localStorage.getItem('options');
+      if (storedOptions) {
+        setOptions(JSON.parse(storedOptions));
+      } else {
+        localStorage.setItem('options', JSON.stringify(INITIAL_OPTIONS));
+        setOptions(INITIAL_OPTIONS);
+      }
 
-    const storedSystemMessage = localStorage.getItem('systemMessage');
-    if (storedSystemMessage) {
-      setSystemMessage(JSON.parse(storedSystemMessage));
-    } else {
-      localStorage.setItem(
-        'systemMessage',
-        JSON.stringify(INITIAL_SYSTEM_MESSAGE)
-      );
-      setSystemMessage(INITIAL_SYSTEM_MESSAGE);
+      const storedSystemMessage = localStorage.getItem('systemMessage');
+      if (storedSystemMessage) {
+        setSystemMessage(JSON.parse(storedSystemMessage));
+      } else {
+        localStorage.setItem(
+          'systemMessage',
+          JSON.stringify(INITIAL_SYSTEM_MESSAGE)
+        );
+        setSystemMessage(INITIAL_SYSTEM_MESSAGE);
+      }
+    } catch (e) {
+      // TODO get models error toast
     }
   };
 
@@ -65,38 +71,52 @@ const ChatInput = () => {
     setUserMessage(event.target.value);
   };
 
-  const handleSendButton = async () => {
+  const getChatAnswer = async (history: HistoryMessage[]) => {
     setIsLoading(true);
+    try {
+      controller = new AbortController();
 
-    const systemChatMessage: HistoryMessage = {
-      id: nanoid(),
-      message: { content: systemMessage, role: 'system' },
-      info: '',
-    };
-    const userChatMessage: HistoryMessage = {
-      id: nanoid(),
-      message: { content: userMessage, role: 'user' },
-      info: '',
-    };
-
-    const newHistory: HistoryMessage[] =
-      history.length === 0 && systemMessage !== ''
-        ? [systemChatMessage, userChatMessage]
-        : [...history, userChatMessage];
-
-    setHistory(newHistory);
-    setUserMessage('');
-
-    if (selectedModel) {
-      const request: ChatRequest = {
-        model: selectedModel.model,
-        options,
-        history: newHistory,
-        setHistory,
-        controller: new AbortController(),
-      };
-      await getChatResponse(request);
+      if (selectedModel) {
+        const request: ChatRequest = {
+          model: selectedModel.model,
+          options,
+          history,
+          setHistory,
+          controller,
+        };
+        await getChatResponse(request);
+      }
+    } catch (e) {
+      // TODO get chat response error toast
+    } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleActionButton = async () => {
+    if (!isLoading) {
+      const systemChatMessage: HistoryMessage = {
+        id: nanoid(),
+        message: { content: systemMessage, role: 'system' },
+        info: '',
+      };
+      const userChatMessage: HistoryMessage = {
+        id: nanoid(),
+        message: { content: userMessage, role: 'user' },
+        info: '',
+      };
+
+      const newHistory: HistoryMessage[] =
+        history.length === 0 && systemMessage !== ''
+          ? [systemChatMessage, userChatMessage]
+          : [...history, userChatMessage];
+
+      setHistory(newHistory);
+      setUserMessage('');
+
+      await getChatAnswer(newHistory);
+    } else {
+      controller.abort();
     }
   };
 
@@ -126,7 +146,7 @@ const ChatInput = () => {
       />
       <ActionButton
         loading={isLoading}
-        onClick={handleSendButton}
+        onClick={handleActionButton}
         userMessage={userMessage}
       />
       <SettingsButton onClick={handleSettingButton} />

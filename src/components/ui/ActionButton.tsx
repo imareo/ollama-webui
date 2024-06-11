@@ -11,9 +11,9 @@ const ActionButton = (props: Props) => {
     <button
       className={`me-1.5 h-11 rounded-full px-4 py-2 font-bold text-white shadow ${!props.loading ? 'bg-blue-500 hover:bg-blue-700' : 'bg-red-500 hover:bg-red-700'}`}
       onClick={onClick}
-      disabled={loading || userMessage.length === 0}
+      disabled={userMessage.length === 0 && !loading}
     >
-      {!props.loading ? 'Send' : 'Stop'}
+      {!loading ? 'Send' : 'Stop'}
     </button>
   );
 };
