@@ -22,6 +22,7 @@ import {
 import { getShortName } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
 import { nanoid } from 'nanoid';
+import { useOutsideClick } from '../../lib/hooks.tsx';
 
 const ChatInput = () => {
   const { history, setHistory } = useContext(HistoryContext);
@@ -106,6 +107,12 @@ const ChatInput = () => {
     setShowSettings(!showSettings);
   };
 
+  const ref = useOutsideClick<HTMLUListElement>(() => setShowSettings(false));
+
+  const handleOutClick = (event: any) => {
+    event.stopPropagation();
+  };
+
   useEffect(() => {
     void initSettings();
   }, []);
@@ -148,8 +155,10 @@ const ChatInput = () => {
         </svg>
       </button>
       <ul
+        ref={ref}
         className='fixed bottom-20 end-8 z-10 w-64 rounded-lg bg-gray-50 shadow'
         hidden={!showSettings}
+        onClick={handleOutClick}
       >
         <SystemMessage
           systemMessage={systemMessage}
