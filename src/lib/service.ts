@@ -1,9 +1,16 @@
 import { API_URL } from './constants.ts';
-import { ChatRequest, HistoryMessage, Model } from './types.ts';
+import { ChatRequest, ChatResponse, HistoryMessage, Model } from './types.ts';
 import { getInfo } from './utils.ts';
 import { nanoid } from 'nanoid';
 
-export const getChatResponse = async ({
+let abortController = new AbortController();
+export const getAbortController = () => abortController;
+export const resetAbortController = (): void => {
+  abortController.abort();
+  abortController = new AbortController();
+};
+
+export const getChatApi = async ({
   model,
   options,
   history,
@@ -29,7 +36,7 @@ export const getChatResponse = async ({
     info: '',
   };
 
-  let response: any;
+  let response: ChatResponse | undefined;
 
   const reader = stream.body?.getReader();
   if (reader) {
@@ -41,7 +48,7 @@ export const getChatResponse = async ({
 
       const decoder = new TextDecoder().decode(value);
       response = JSON.parse(decoder);
-      chatResponse = `${chatResponse}${response.message.content}`;
+      chatResponse = `${chatResponse}${response?.message.content}`;
       lastMessage = {
         ...lastMessage,
         message: {
@@ -51,9 +58,11 @@ export const getChatResponse = async ({
       };
       setHistory([...history, lastMessage]);
     }
-    const info = `${getInfo(response)}, vram: ${await getVramPercent()}%`;
     // after receive stream done can add info with stats
-    setHistory([...history, { ...lastMessage, info }]);
+    setHistory([
+      ...history,
+      { ...lastMessage, info: await getInfo(response as ChatResponse) },
+    ]);
   }
 };
 

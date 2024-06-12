@@ -1,14 +1,24 @@
-import { HistoryMessage } from '../../lib/types.ts';
+import {
+  ChatRequest,
+  HistoryMessage,
+  Model,
+  Options,
+} from '../../lib/types.ts';
 import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
 import historyContext from '../../context/HistoryContext.ts';
+import { getAbortController, getChatApi } from '../../lib/service.ts';
 
 type Props = {
   message: HistoryMessage;
+  selectedModel?: Model;
+  options: Options;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
 };
 
 const UserMessage = (props: Props) => {
-  const { message } = props;
+  const { message, selectedModel, options, isLoading, setIsLoading } = props;
   const { history, setHistory } = useContext(historyContext);
 
   const handleCopyMessage = (content: string) => async () => {
@@ -23,8 +33,27 @@ const UserMessage = (props: Props) => {
 
   const handleReloadChat = (id: string) => async () => {
     const indexLastMessage = history.findIndex((message) => message.id === id);
-    if (indexLastMessage > 0) {
-      setHistory(history.slice(0, indexLastMessage));
+    setIsLoading(true);
+    try {
+      if (indexLastMessage > 0) {
+        const newHistory = history.slice(0, indexLastMessage + 1);
+        setHistory(newHistory);
+
+        if (selectedModel) {
+          const request: ChatRequest = {
+            model: selectedModel.model,
+            options,
+            history: newHistory,
+            setHistory,
+            controller: getAbortController(),
+          };
+          await getChatApi(request);
+        }
+      }
+    } catch (e) {
+      // TODO get models error toast
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,11 +69,12 @@ const UserMessage = (props: Props) => {
           title='Copy message'
           onClick={handleCopyMessage(message.message.content)}
         />
-        <TbReload
-          className='text-secondary fw-light text-2xl'
-          title='Clear below and ask again from here'
-          onClick={handleReloadChat(message.id)}
-        />
+        <div onClick={!isLoading ? handleReloadChat(message.id) : undefined}>
+          <TbReload
+            className='text-secondary fw-light text-2xl'
+            title='Clear below and ask again from here'
+          />
+        </div>
         <TbSquareRoundedX
           className='text-secondary fw-light justify-end text-2xl'
           title='Delete message'

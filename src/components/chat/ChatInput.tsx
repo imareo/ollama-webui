@@ -10,33 +10,50 @@ import {
   Options,
 } from '../../lib/types.ts';
 import Models from '../chatSettings/Models.tsx';
-import { getChatResponse, getModelsAPI } from '../../lib/service.ts';
+import {
+  getAbortController,
+  getChatApi,
+  getModelsAPI,
+  resetAbortController,
+} from '../../lib/service.ts';
 import {
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
 } from '../../lib/constants.ts';
-import { getShortName } from '../../lib/utils.ts';
+import { getShortName, updateHistory } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
-import { nanoid } from 'nanoid';
 import { useOutsideClick } from '../../lib/hooks.tsx';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
 
-let controller: AbortController;
+type Props = {
+  models: Model[];
+  setModels: (models: Model[]) => void;
+  selectedModel?: Model;
+  setSelectedModel: (model: Model) => void;
+  options: Options;
+  setOptions: (options: Options) => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
+};
 
-const ChatInput = () => {
+const ChatInput = (props: Props) => {
+  const {
+    models,
+    setModels,
+    selectedModel,
+    setSelectedModel,
+    options,
+    setOptions,
+    isLoading,
+    setIsLoading,
+  } = props;
   const { history, setHistory } = useContext(HistoryContext);
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [models, setModels] = useState<Model[]>([]);
-  const [selectedModel, setSelectedModel] = useState<Model | undefined>(
-    undefined
-  );
-  const [options, setOptions] = useState<Options>(INITIAL_OPTIONS);
   const [systemMessage, setSystemMessage] = useState<string>(
     INITIAL_SYSTEM_MESSAGE
   );
   const [userMessage, setUserMessage] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const initSettings = async () => {
     try {
@@ -74,17 +91,15 @@ const ChatInput = () => {
   const getChatAnswer = async (history: HistoryMessage[]) => {
     setIsLoading(true);
     try {
-      controller = new AbortController();
-
       if (selectedModel) {
         const request: ChatRequest = {
           model: selectedModel.model,
           options,
           history,
           setHistory,
-          controller,
+          controller: getAbortController(),
         };
-        await getChatResponse(request);
+        await getChatApi(request);
       }
     } catch (e) {
       // TODO get chat response error toast
@@ -95,28 +110,14 @@ const ChatInput = () => {
 
   const handleActionButton = async () => {
     if (!isLoading) {
-      const systemChatMessage: HistoryMessage = {
-        id: nanoid(),
-        message: { content: systemMessage, role: 'system' },
-        info: '',
-      };
-      const userChatMessage: HistoryMessage = {
-        id: nanoid(),
-        message: { content: userMessage, role: 'user' },
-        info: '',
-      };
+      const updatedHistory = updateHistory(history, systemMessage, userMessage);
 
-      const newHistory: HistoryMessage[] =
-        history.length === 0 && systemMessage !== ''
-          ? [systemChatMessage, userChatMessage]
-          : [...history, userChatMessage];
-
-      setHistory(newHistory);
+      setHistory(updatedHistory);
       setUserMessage('');
 
-      await getChatAnswer(newHistory);
+      await getChatAnswer(updatedHistory);
     } else {
-      controller.abort();
+      resetAbortController();
     }
   };
 

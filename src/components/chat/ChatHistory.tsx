@@ -2,8 +2,17 @@ import { useContext, useEffect } from 'react';
 import HistoryContext from '../../context/HistoryContext.ts';
 import UserMessage from './UserMessage.tsx';
 import AssistantMessage from './AssistantMessage.tsx';
+import { Model, Options } from '../../lib/types.ts';
 
-const ChatHistory = () => {
+type Props = {
+  selectedModel?: Model;
+  options: Options;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
+};
+
+const ChatHistory = (props: Props) => {
+  const { selectedModel, options, isLoading, setIsLoading } = props;
   const { history } = useContext(HistoryContext);
 
   useEffect(() => {
@@ -16,7 +25,13 @@ const ChatHistory = () => {
         history.map((message) => (
           <div className='mb-2 grid grid-cols-12' key={message.id}>
             {message.message.role === 'user' && (
-              <UserMessage message={message} />
+              <UserMessage
+                message={message}
+                selectedModel={selectedModel}
+                options={options}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
             )}
             {message.message.role === 'assistant' && (
               <AssistantMessage message={message} />
