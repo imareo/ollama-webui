@@ -8,10 +8,11 @@ type Props = {
 const ContextSize = (props: Props) => {
   const { options, setOptions } = props;
   const handleContextChange = async (event: any) => {
-    setOptions({ ...options, num_ctx: event.target.valueAsNumber });
+    const newContext = event.target.valueAsNumber;
+    setOptions({ ...options, num_ctx: newContext });
     localStorage.setItem(
       'options',
-      JSON.stringify({ ...options, num_ctx: event.target.valueAsNumber })
+      JSON.stringify({ ...options, num_ctx: newContext })
     );
   };
 

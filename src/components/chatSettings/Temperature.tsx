@@ -8,10 +8,11 @@ type Props = {
 const Temperature = (props: Props) => {
   const { options, setOptions } = props;
   const handleTemperatureChange = (event: any) => {
-    setOptions({ ...options, temperature: event.target.valueAsNumber });
+    const newTemperature = event.target.valueAsNumber;
+    setOptions({ ...options, temperature: newTemperature });
     localStorage.setItem(
       'options',
-      JSON.stringify({ ...options, temperature: event.target.valueAsNumber })
+      JSON.stringify({ ...options, temperature: newTemperature })
     );
   };
 

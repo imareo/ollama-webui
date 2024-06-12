@@ -6,8 +6,9 @@ type Props = {
 const SystemMessage = (props: Props) => {
   const { systemMessage, setSystemMessage } = props;
   const handleSystemMessageChange = (event: any) => {
-    setSystemMessage(event.target.value);
-    localStorage.setItem('systemMessage', JSON.stringify(systemMessage));
+    const newSystemMessage = event.target.value;
+    setSystemMessage(newSystemMessage);
+    localStorage.setItem('systemMessage', JSON.stringify(newSystemMessage));
   };
 
   return (

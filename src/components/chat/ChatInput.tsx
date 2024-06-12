@@ -22,7 +22,7 @@ import {
 } from '../../lib/constants.ts';
 import { getShortName, updateHistory } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
-import { useOutsideClick } from '../../lib/hooks.tsx';
+import { useOutsideClick } from '../../lib/hooks.ts';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
 
