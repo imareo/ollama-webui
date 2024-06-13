@@ -17,14 +17,18 @@ import {
   resetAbortController,
 } from '../../lib/service.ts';
 import {
+  ERROR_CHAT_RESPONSE,
+  ERROR_MODELS_LOADING,
   INITIAL_OPTIONS,
   INITIAL_SYSTEM_MESSAGE,
+  WARNING_STOP_BY_USER,
 } from '../../lib/constants.ts';
 import { getShortName, updateHistory } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
 import { useOutsideClick } from '../../lib/hooks.ts';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
+import ToastContext from '../../context/ToastContext.ts';
 
 type Props = {
   models: Model[];
@@ -48,6 +52,7 @@ const ChatInput = (props: Props) => {
     isLoading,
     setIsLoading,
   } = props;
+  const { setAppToast } = useContext(ToastContext);
   const { history, setHistory } = useContext(HistoryContext);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [systemMessage, setSystemMessage] = useState<string>(
@@ -80,7 +85,7 @@ const ChatInput = (props: Props) => {
         setSystemMessage(INITIAL_SYSTEM_MESSAGE);
       }
     } catch (e) {
-      // TODO get models error toast
+      setAppToast(ERROR_MODELS_LOADING);
     }
   };
 
@@ -101,8 +106,10 @@ const ChatInput = (props: Props) => {
         };
         await getChatApi(request);
       }
-    } catch (e) {
-      // TODO get chat response error toast
+    } catch (e: any) {
+      if (e.name !== 'AbortError') {
+        setAppToast(ERROR_CHAT_RESPONSE);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +125,7 @@ const ChatInput = (props: Props) => {
       await getChatAnswer(updatedHistory);
     } else {
       resetAbortController();
+      setAppToast(WARNING_STOP_BY_USER);
     }
   };
 

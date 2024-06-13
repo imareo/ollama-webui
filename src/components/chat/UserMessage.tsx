@@ -8,6 +8,12 @@ import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
 import historyContext from '../../context/HistoryContext.ts';
 import { getAbortController, getChatApi } from '../../lib/service.ts';
+import {
+  ERROR_CHAT_RESPONSE,
+  ERROR_COPY_TO_CLIPBOARD,
+  SUCCESS_COPY_TO_CLIPBOARD,
+} from '../../lib/constants.ts';
+import ToastContext from '../../context/ToastContext.ts';
 
 type Props = {
   message: HistoryMessage;
@@ -18,13 +24,17 @@ type Props = {
 };
 
 const UserMessage = (props: Props) => {
+  const { setAppToast } = useContext(ToastContext);
   const { message, selectedModel, options, isLoading, setIsLoading } = props;
   const { history, setHistory } = useContext(historyContext);
 
   const handleCopyMessage = (content: string) => async () => {
     try {
       await navigator.clipboard.writeText(content);
-    } catch (error) {}
+      setAppToast(SUCCESS_COPY_TO_CLIPBOARD);
+    } catch (e: any) {
+      setAppToast(ERROR_COPY_TO_CLIPBOARD);
+    }
   };
 
   const handleDeleteMessage = (id: string) => async () => {
@@ -35,7 +45,7 @@ const UserMessage = (props: Props) => {
     const indexLastMessage = history.findIndex((message) => message.id === id);
     setIsLoading(true);
     try {
-      if (indexLastMessage > 0) {
+      if (indexLastMessage >= 0) {
         const newHistory = history.slice(0, indexLastMessage + 1);
         setHistory(newHistory);
 
@@ -50,8 +60,10 @@ const UserMessage = (props: Props) => {
           await getChatApi(request);
         }
       }
-    } catch (e) {
-      // TODO get models error toast
+    } catch (e: any) {
+      if (e.name !== 'AbortError') {
+        setAppToast(ERROR_CHAT_RESPONSE);
+      }
     } finally {
       setIsLoading(false);
     }

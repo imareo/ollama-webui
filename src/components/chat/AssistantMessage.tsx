@@ -3,16 +3,25 @@ import Markdown from 'react-markdown';
 import { TbCopy, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
 import historyContext from '../../context/HistoryContext.ts';
+import {
+  ERROR_COPY_TO_CLIPBOARD,
+  SUCCESS_COPY_TO_CLIPBOARD,
+} from '../../lib/constants.ts';
+import ToastContext from '../../context/ToastContext.ts';
 
 type Props = { message: HistoryMessage };
 const AssistantMessage = (props: Props) => {
-  const { message } = props;
+  const { setAppToast } = useContext(ToastContext);
   const { history, setHistory } = useContext(historyContext);
+  const { message } = props;
 
   const handleCopyMessage = (content: string) => async () => {
     try {
       await navigator.clipboard.writeText(content);
-    } catch (error) {}
+      setAppToast(SUCCESS_COPY_TO_CLIPBOARD);
+    } catch (e: any) {
+      setAppToast(ERROR_COPY_TO_CLIPBOARD);
+    }
   };
 
   const handleDeleteMessage = (id: string) => async () => {

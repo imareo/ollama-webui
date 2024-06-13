@@ -45,3 +45,8 @@ export type ChatResponse = {
   eval_count: number;
   eval_duration: number;
 };
+
+export type MyToast = {
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'error';
+};
