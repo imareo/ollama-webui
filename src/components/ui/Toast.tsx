@@ -1,11 +1,10 @@
 import { useContext, useEffect } from 'react';
 import ToastContext from '../../context/ToastContext.ts';
 import { toast, ToastContainer } from 'react-toastify';
-import { MyToast } from '../../lib/types.ts';
+import { EMPTY_TOAST } from '../../lib/constants.ts';
 
 const Toast = () => {
   const { appToast, setAppToast } = useContext(ToastContext);
-  const emptyToast: MyToast = { message: '', type: 'info' };
 
   useEffect(() => {
     if (appToast.message) {
@@ -14,7 +13,7 @@ const Toast = () => {
         theme: 'colored',
         hideProgressBar: true,
       });
-      setAppToast(emptyToast);
+      setAppToast(EMPTY_TOAST);
     }
   }, [appToast]);
 

@@ -3,7 +3,7 @@ import { HistoryMessage } from '../lib/types.ts';
 
 const HistoryContext = createContext({
   history: [] as HistoryMessage[],
-  setHistory: (_message: any) => {},
+  setHistory: (_messages: HistoryMessage[]) => {},
 });
 
 export default HistoryContext;

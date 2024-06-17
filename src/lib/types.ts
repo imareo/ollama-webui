@@ -10,14 +10,14 @@ export type HistoryMessage = {
   info: string;
 };
 
-export type Options = {
+export type ChatOptions = {
   temperature: number;
   num_ctx: number;
 };
 
 export type ChatRequest = {
   model: string;
-  options: Options;
+  options: ChatOptions;
   history: HistoryMessage[];
   setHistory: (history: HistoryMessage[]) => void;
   controller: AbortController;

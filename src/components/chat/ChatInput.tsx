@@ -7,7 +7,7 @@ import {
   ChatRequest,
   HistoryMessage,
   Model,
-  Options,
+  ChatOptions,
 } from '../../lib/types.ts';
 import Models from '../chatSettings/Models.tsx';
 import {
@@ -23,7 +23,7 @@ import {
   INITIAL_SYSTEM_MESSAGE,
   WARNING_STOP_BY_USER,
 } from '../../lib/constants.ts';
-import { getShortName, updateHistory } from '../../lib/utils.ts';
+import { getModelShortName, updateHistory } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
 import { useOutsideClick } from '../../lib/hooks.ts';
 import ActionButton from '../ui/ActionButton.tsx';
@@ -35,8 +35,8 @@ type Props = {
   setModels: (models: Model[]) => void;
   selectedModel?: Model;
   setSelectedModel: (model: Model) => void;
-  options: Options;
-  setOptions: (options: Options) => void;
+  options: ChatOptions;
+  setOptions: (options: ChatOptions) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 };
@@ -149,7 +149,7 @@ const ChatInput = (props: Props) => {
         id='input-area'
         className='me-1.5 flex-auto resize-none rounded-3xl border-2 px-4 py-2'
         maxRows={10}
-        placeholder={`Ask model ${getShortName(selectedModel?.name)}, temp: ${options?.temperature}, ctx: ${options?.num_ctx}`}
+        placeholder={`Ask model ${getModelShortName(selectedModel?.name)}, temp: ${options?.temperature}, ctx: ${options?.num_ctx}`}
         value={userMessage}
         onChange={(event) => handleInputChange(event)}
       />

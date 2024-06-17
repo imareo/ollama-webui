@@ -1,10 +1,10 @@
 import { ChatResponse, HistoryMessage } from './types.ts';
 import { nanoid } from 'nanoid';
-import { getVramPercent } from './service.ts';
+import { getVramPercentAPI } from './service.ts';
 
-export const getShortName = (model?: string) => model?.split(':')[0];
+export const getModelShortName = (model?: string) => model?.split(':')[0];
 
-export const getInfo = async (response: ChatResponse) => {
+export const getResponseInfo = async (response: ChatResponse) => {
   const tokenRate = (
     (response.eval_count * 1000000000) /
     response.eval_duration
@@ -12,8 +12,8 @@ export const getInfo = async (response: ChatResponse) => {
 
   const contextLength = response.eval_count;
   const userContextLength = response.prompt_eval_count;
-  const usedModel = getShortName(response.model);
-  const vramPercent = await getVramPercent();
+  const usedModel = getModelShortName(response.model);
+  const vramPercent = await getVramPercentAPI();
 
   return `model: ${usedModel}; user ctx: ${userContextLength}; ctx: ${contextLength}; rate: ${tokenRate}t/s; vram: ${vramPercent}%`;
 };

@@ -2,7 +2,7 @@ import {
   ChatRequest,
   HistoryMessage,
   Model,
-  Options,
+  ChatOptions,
 } from '../../lib/types.ts';
 import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
@@ -18,7 +18,7 @@ import ToastContext from '../../context/ToastContext.ts';
 type Props = {
   message: HistoryMessage;
   selectedModel?: Model;
-  options: Options;
+  options: ChatOptions;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 };
@@ -71,7 +71,9 @@ const UserMessage = (props: Props) => {
 
   return (
     <div className='col-span-11 col-start-2 max-w-none rounded-xl bg-blue-50 p-2'>
-      <pre className='prose-sm px-3 pt-3'>{message.message.content}</pre>
+      <pre className='prose-sm whitespace-break-spaces px-3 pt-3'>
+        {message.message.content}
+      </pre>
       <div className='flex pt-2 text-end text-xs text-slate-500'>
         <div className='grow justify-start self-center pl-1 text-start'>
           {message.info}

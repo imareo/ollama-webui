@@ -1,6 +1,6 @@
 import { API_URL } from './constants.ts';
 import { ChatRequest, ChatResponse, HistoryMessage, Model } from './types.ts';
-import { getInfo } from './utils.ts';
+import { getResponseInfo } from './utils.ts';
 import { nanoid } from 'nanoid';
 
 let abortController = new AbortController();
@@ -61,7 +61,7 @@ export const getChatApi = async ({
     // after receive stream done can add info with stats
     setHistory([
       ...history,
-      { ...lastMessage, info: await getInfo(response as ChatResponse) },
+      { ...lastMessage, info: await getResponseInfo(response as ChatResponse) },
     ]);
   }
 };
@@ -72,7 +72,7 @@ export const getModelsAPI = async (): Promise<Model[]> => {
   return data.models;
 };
 
-export const getVramPercent = async (): Promise<number> => {
+export const getVramPercentAPI = async (): Promise<number> => {
   const response = await fetch(`${API_URL}/ps`);
   const data = await response.json();
   const model = data.models[0];

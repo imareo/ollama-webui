@@ -1,8 +1,8 @@
-import { Options } from '../../lib/types.ts';
+import { ChatOptions } from '../../lib/types.ts';
 
 type Props = {
-  options: Options;
-  setOptions: (_options: Options) => void;
+  options: ChatOptions;
+  setOptions: (_options: ChatOptions) => void;
 };
 
 const ContextSize = (props: Props) => {

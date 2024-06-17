@@ -3,7 +3,7 @@ import { MyToast } from '../lib/types.ts';
 
 const ToastContext = createContext({
   appToast: { message: '', type: 'info' } as MyToast,
-  setAppToast: (_toast: any) => {},
+  setAppToast: (_toast: MyToast) => {},
 });
 
 export default ToastContext;

@@ -2,11 +2,11 @@ import { useContext, useEffect } from 'react';
 import HistoryContext from '../../context/HistoryContext.ts';
 import UserMessage from './UserMessage.tsx';
 import AssistantMessage from './AssistantMessage.tsx';
-import { Model, Options } from '../../lib/types.ts';
+import { Model, ChatOptions } from '../../lib/types.ts';
 
 type Props = {
   selectedModel?: Model;
-  options: Options;
+  options: ChatOptions;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 };
