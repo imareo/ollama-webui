@@ -29,6 +29,7 @@ export type Model = {
   details: {
     parameter_size: string;
     quantization_level: string;
+    families: string[];
   };
 };
 

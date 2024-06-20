@@ -1,8 +1,8 @@
 import {
+  ChatOptions,
   ChatRequest,
   HistoryMessage,
   Model,
-  ChatOptions,
 } from '../../lib/types.ts';
 import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
@@ -71,6 +71,14 @@ const UserMessage = (props: Props) => {
 
   return (
     <div className='col-span-11 col-start-2 max-w-none rounded-xl bg-blue-50 p-2'>
+      {!!message.message.images?.length &&
+        message.message.images.map((image) => (
+          <img
+            className='w-60'
+            src={`data:image/png;base64,${image}`}
+            alt={'user image'}
+          />
+        ))}
       <pre className='prose-sm whitespace-break-spaces px-3 pt-3'>
         {message.message.content}
       </pre>

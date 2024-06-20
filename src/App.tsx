@@ -4,7 +4,7 @@ import ChatInput from './components/chat/ChatInput.tsx';
 import ChatHistory from './components/chat/ChatHistory.tsx';
 import HistoryContext from './context/HistoryContext.ts';
 import { useState } from 'react';
-import { HistoryMessage, Model, MyToast, ChatOptions } from './lib/types.ts';
+import { ChatOptions, HistoryMessage, Model, MyToast } from './lib/types.ts';
 import { EMPTY_TOAST, INITIAL_OPTIONS } from './lib/constants.ts';
 import ToastContext from './context/ToastContext.ts';
 import Toast from './components/ui/Toast.tsx';

@@ -18,10 +18,15 @@ export const getResponseInfo = async (response: ChatResponse) => {
   return `model: ${usedModel}; user ctx: ${userContextLength}; ctx: ${contextLength}; rate: ${tokenRate}t/s; vram: ${vramPercent}%`;
 };
 
+export const removeBase64Prefix = (base64String: string): string => {
+  return base64String.replace(/^data:image\/[a-z]+;base64,/, '');
+};
+
 export const updateHistory = (
   history: HistoryMessage[],
   systemMessage: string,
-  userMessage: string
+  userMessage: string,
+  userImages: string[]
 ) => {
   const systemChatMessage: HistoryMessage = {
     id: nanoid(),
@@ -30,7 +35,7 @@ export const updateHistory = (
   };
   const userChatMessage: HistoryMessage = {
     id: nanoid(),
-    message: { content: userMessage, role: 'user' },
+    message: { content: userMessage, images: userImages, role: 'user' },
     info: '',
   };
 

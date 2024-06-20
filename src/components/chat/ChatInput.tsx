@@ -4,10 +4,10 @@ import ContextSize from '../chatSettings/ContextSize.tsx';
 import SystemMessage from '../chatSettings/SystemMessage.tsx';
 import { useContext, useEffect, useState } from 'react';
 import {
+  ChatOptions,
   ChatRequest,
   HistoryMessage,
   Model,
-  ChatOptions,
 } from '../../lib/types.ts';
 import Models from '../chatSettings/Models.tsx';
 import {
@@ -29,6 +29,7 @@ import { useOutsideClick } from '../../lib/hooks.ts';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
 import ToastContext from '../../context/ToastContext.ts';
+import ImageButton from '../ui/ImageButton.tsx';
 
 type Props = {
   models: Model[];
@@ -59,6 +60,7 @@ const ChatInput = (props: Props) => {
     INITIAL_SYSTEM_MESSAGE
   );
   const [userMessage, setUserMessage] = useState<string>('');
+  const [userImages, setUserImages] = useState<string[]>([]);
 
   const initSettings = async () => {
     try {
@@ -117,10 +119,16 @@ const ChatInput = (props: Props) => {
 
   const handleActionButton = async () => {
     if (!isLoading) {
-      const updatedHistory = updateHistory(history, systemMessage, userMessage);
+      const updatedHistory = updateHistory(
+        history,
+        systemMessage,
+        userMessage,
+        userImages
+      );
 
       setHistory(updatedHistory);
       setUserMessage('');
+      setUserImages([]);
 
       await getChatAnswer(updatedHistory);
     } else {
@@ -158,6 +166,11 @@ const ChatInput = (props: Props) => {
         onClick={handleActionButton}
         userMessage={userMessage}
       />
+      <ImageButton
+        userImages={userImages}
+        setUserImages={setUserImages}
+        selectedModel={selectedModel}
+      />
       <SettingsButton onClick={handleSettingButton} />
       <ul
         ref={ref}
@@ -175,6 +188,7 @@ const ChatInput = (props: Props) => {
           models={models}
           selectedModel={selectedModel}
           setSelectedModel={setSelectedModel}
+          setUserImages={setUserImages}
         />
       </ul>
     </div>
