@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "model-update": "./update_ollama_model.fish"
   },
   "dependencies": {
     "nanoid": "^5.0.7",
