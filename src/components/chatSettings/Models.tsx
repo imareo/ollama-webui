@@ -28,22 +28,28 @@ const Models = (props: Props) => {
             key={index}
             onClick={handleModelChange(model)}
           >
-            <div className='mx-2 my-1' title={model.details.parameter_size}>
-              {getModelShortName(model.name)}
-            </div>
+            <div className='mx-2 my-1'>{getModelShortName(model.name)}</div>
             <div className='ml-auto flex flex-row justify-end'>
               {model.details.families.includes('clip') && (
                 <div
                   className='my-1 me-1 rounded-full bg-blue-500 px-2 py-0.5 text-sm font-semibold text-white'
                   style={{ fontSize: '0.6em' }}
+                  title='multimodal model'
                 >
-                  Img
+                  Vision
                 </div>
               )}
-
+              <div
+                className='bg--600 my-1 me-1 rounded-full bg-pink-800 px-2 py-0.5 text-sm font-semibold text-white'
+                style={{ fontSize: '0.6em' }}
+                title='parameter size'
+              >
+                {model.details.parameter_size}
+              </div>
               <div
                 className='my-1 me-2 rounded-full bg-gray-600 px-2 py-0.5 text-sm font-semibold text-white'
                 style={{ fontSize: '0.6em' }}
+                title='quantization level'
               >
                 {model.details.quantization_level}
               </div>

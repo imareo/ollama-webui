@@ -174,7 +174,7 @@ const ChatInput = (props: Props) => {
       <SettingsButton onClick={handleSettingButton} />
       <ul
         ref={ref}
-        className='fixed bottom-20 end-8 z-10 w-64 rounded-lg bg-gray-50 shadow'
+        className='fixed bottom-20 end-8 z-10 w-[350px] rounded-lg bg-gray-50 shadow'
         hidden={!showSettings}
         onClick={handleOutClick}
       >
