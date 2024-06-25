@@ -1,7 +1,4 @@
 import TextareaAutosize from 'react-textarea-autosize';
-import Temperature from '../chatSettings/Temperature.tsx';
-import ContextSize from '../chatSettings/ContextSize.tsx';
-import SystemMessage from '../chatSettings/SystemMessage.tsx';
 import { useContext, useEffect, useState } from 'react';
 import {
   ChatOptions,
@@ -9,7 +6,6 @@ import {
   HistoryMessage,
   Model,
 } from '../../lib/types.ts';
-import Models from '../chatSettings/Models.tsx';
 import {
   getAbortController,
   getChatApi,
@@ -25,7 +21,6 @@ import {
 } from '../../lib/constants.ts';
 import { getModelShortName, updateHistory } from '../../lib/utils.ts';
 import HistoryContext from '../../context/HistoryContext.ts';
-import { useOutsideClick } from '../../lib/hooks.ts';
 import ActionButton from '../ui/ActionButton.tsx';
 import SettingsButton from '../ui/SettingsButton.tsx';
 import ToastContext from '../../context/ToastContext.ts';
@@ -61,7 +56,7 @@ const ChatInput = (props: Props) => {
   );
   const [userMessage, setUserMessage] = useState<string>('');
   const [userImages, setUserImages] = useState<string[]>([]);
-  const [isImageHidden, setIsImageHidden] = useState(true);
+  const [showImage, setShowImage] = useState(false);
 
   const initSettings = async () => {
     try {
@@ -119,7 +114,7 @@ const ChatInput = (props: Props) => {
   };
 
   const handleActionButton = async () => {
-    setIsImageHidden(true);
+    setShowImage(true);
     if (!isLoading) {
       const updatedHistory = updateHistory(
         history,
@@ -141,12 +136,6 @@ const ChatInput = (props: Props) => {
 
   const handleSettingButton = async () => {
     setShowSettings(!showSettings);
-  };
-
-  const ref = useOutsideClick<HTMLDivElement>(() => setShowSettings(false));
-
-  const handleOutClick = (event: any) => {
-    event.stopPropagation();
   };
 
   useEffect(() => {
@@ -172,29 +161,22 @@ const ChatInput = (props: Props) => {
         userImages={userImages}
         setUserImages={setUserImages}
         selectedModel={selectedModel}
-        isImageHidden={isImageHidden}
-        setIsImageHidden={setIsImageHidden}
+        showImage={showImage}
+        setShowImage={setShowImage}
       />
-      <SettingsButton onClick={handleSettingButton} />
-      <div
-        ref={ref}
-        className='fixed bottom-20 end-8 z-10 w-[350px] rounded-lg bg-gray-50 shadow'
-        hidden={!showSettings}
-        onClick={handleOutClick}
-      >
-        <SystemMessage
-          systemMessage={systemMessage}
-          setSystemMessage={setSystemMessage}
-        />
-        <Temperature options={options} setOptions={setOptions} />
-        <ContextSize options={options} setOptions={setOptions} />
-        <Models
-          models={models}
-          selectedModel={selectedModel}
-          setSelectedModel={setSelectedModel}
-          setUserImages={setUserImages}
-        />
-      </div>
+      <SettingsButton
+        showSettings={showSettings}
+        setShowSettings={setShowSettings}
+        systemMessage={systemMessage}
+        setSystemMessage={setSystemMessage}
+        options={options}
+        setOptions={setOptions}
+        models={models}
+        selectedModel={selectedModel}
+        setSelectedModel={setSelectedModel}
+        setUserImages={setUserImages}
+        onClick={handleSettingButton}
+      />
     </div>
   );
 };

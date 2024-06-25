@@ -2,30 +2,29 @@ import { removeBase64Prefix } from '../../lib/utils.ts';
 import { Model } from '../../lib/types.ts';
 import { useContext, useEffect, useState } from 'react';
 import ToastContext from '../../context/ToastContext.ts';
-import {
-  ERROR_LOADING_IMAGE,
-  SUCCESS_LOADING_IMAGE,
-} from '../../lib/constants.ts';
+import { ERROR_LOADING_IMAGE } from '../../lib/constants.ts';
 import ImagePreview from './ImagePreview.tsx';
+import { useOutsideClick } from '../../lib/hooks.ts';
 
 type Props = {
   userImages: string[];
   selectedModel?: Model;
   setUserImages: (images: string[]) => void;
-  isImageHidden: boolean;
-  setIsImageHidden: (hide: boolean) => void;
+  showImage: boolean;
+  setShowImage: (hide: boolean) => void;
 };
 
 const ImageButton = (props: Props) => {
   const { setAppToast } = useContext(ToastContext);
-  const {
-    userImages,
-    selectedModel,
-    setUserImages,
-    isImageHidden,
-    setIsImageHidden,
-  } = props;
+  const { userImages, selectedModel, setUserImages, showImage, setShowImage } =
+    props;
   const [isHidden, setIsHidden] = useState(true);
+
+  const ref = useOutsideClick<HTMLDivElement>(() => setShowImage(false));
+
+  const handleOutClick = (event: any) => {
+    event.stopPropagation();
+  };
 
   const handleFileChange = (event: any) => {
     let file = event.target.files[0];
@@ -39,7 +38,9 @@ const ImageButton = (props: Props) => {
     reader.onload = () => {
       if (typeof reader.result === 'string') {
         setUserImages([...userImages, removeBase64Prefix(reader.result)]);
-        setAppToast(SUCCESS_LOADING_IMAGE);
+        setShowImage(true);
+        // reset for load again same file
+        event.target.value = null;
       }
     };
   };
@@ -51,13 +52,15 @@ const ImageButton = (props: Props) => {
 
   return (
     <div
+      ref={ref}
       className='me-1.5 h-11 w-11 rounded-full bg-amber-500 py-2 font-bold shadow hover:bg-amber-700'
       hidden={isHidden}
+      onClick={handleOutClick}
     >
       <label
         htmlFor='input-image'
         title='Load image'
-        onMouseEnter={() => setIsImageHidden(!userImages.length)}
+        onMouseEnter={() => setShowImage(!!userImages.length)}
       >
         <input
           type='file'
@@ -90,9 +93,10 @@ const ImageButton = (props: Props) => {
         </svg>
       </label>
       <ImagePreview
-        isImageHidden={isImageHidden}
-        setIsImageHidden={setIsImageHidden}
+        showImage={showImage}
+        setShowImage={setShowImage}
         userImages={userImages}
+        setUserImages={setUserImages}
       />
     </div>
   );

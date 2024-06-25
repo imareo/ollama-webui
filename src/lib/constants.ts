@@ -46,8 +46,3 @@ export const ERROR_LOADING_IMAGE: MyToast = {
   message: 'Wrong file type, must use jpg/png',
   type: 'error',
 };
-
-export const SUCCESS_LOADING_IMAGE: MyToast = {
-  message: 'Image loaded',
-  type: 'success',
-};
