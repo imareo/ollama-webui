@@ -74,7 +74,7 @@ const UserMessage = (props: Props) => {
       {!!message.message.images?.length &&
         message.message.images.map((image) => (
           <img
-            className='w-60'
+            className='w-[244px] rounded-lg shadow'
             src={`data:image/png;base64,${image}`}
             alt={'user image'}
           />
@@ -88,7 +88,7 @@ const UserMessage = (props: Props) => {
         </div>
         <TbCopy
           className='flextext-secondary fw-light ml-2 text-2xl'
-          title='Copy message'
+          title='Copy message text'
           onClick={handleCopyMessage(message.message.content)}
         />
         <div onClick={!isLoading ? handleReloadChat(message.id) : undefined}>

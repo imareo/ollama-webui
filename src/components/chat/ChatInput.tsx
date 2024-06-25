@@ -61,6 +61,7 @@ const ChatInput = (props: Props) => {
   );
   const [userMessage, setUserMessage] = useState<string>('');
   const [userImages, setUserImages] = useState<string[]>([]);
+  const [isImageHidden, setIsImageHidden] = useState(true);
 
   const initSettings = async () => {
     try {
@@ -118,6 +119,7 @@ const ChatInput = (props: Props) => {
   };
 
   const handleActionButton = async () => {
+    setIsImageHidden(true);
     if (!isLoading) {
       const updatedHistory = updateHistory(
         history,
@@ -141,7 +143,7 @@ const ChatInput = (props: Props) => {
     setShowSettings(!showSettings);
   };
 
-  const ref = useOutsideClick<HTMLUListElement>(() => setShowSettings(false));
+  const ref = useOutsideClick<HTMLDivElement>(() => setShowSettings(false));
 
   const handleOutClick = (event: any) => {
     event.stopPropagation();
@@ -170,9 +172,11 @@ const ChatInput = (props: Props) => {
         userImages={userImages}
         setUserImages={setUserImages}
         selectedModel={selectedModel}
+        isImageHidden={isImageHidden}
+        setIsImageHidden={setIsImageHidden}
       />
       <SettingsButton onClick={handleSettingButton} />
-      <ul
+      <div
         ref={ref}
         className='fixed bottom-20 end-8 z-10 w-[350px] rounded-lg bg-gray-50 shadow'
         hidden={!showSettings}
@@ -190,7 +194,7 @@ const ChatInput = (props: Props) => {
           setSelectedModel={setSelectedModel}
           setUserImages={setUserImages}
         />
-      </ul>
+      </div>
     </div>
   );
 };

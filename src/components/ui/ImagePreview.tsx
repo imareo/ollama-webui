@@ -11,7 +11,8 @@ const ImagePreview = (props: Props) => {
       <img
         className='w-[244px] rounded-lg shadow'
         src={`data:image/png;base64,${userImages[0]}`}
-        alt={'user image'}
+        alt='user image'
+        title='click to close'
         onClick={() => setIsImageHidden(true)}
       />
     </div>

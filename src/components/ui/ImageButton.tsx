@@ -12,13 +12,20 @@ type Props = {
   userImages: string[];
   selectedModel?: Model;
   setUserImages: (images: string[]) => void;
+  isImageHidden: boolean;
+  setIsImageHidden: (hide: boolean) => void;
 };
 
 const ImageButton = (props: Props) => {
   const { setAppToast } = useContext(ToastContext);
-  const { userImages, selectedModel, setUserImages } = props;
+  const {
+    userImages,
+    selectedModel,
+    setUserImages,
+    isImageHidden,
+    setIsImageHidden,
+  } = props;
   const [isHidden, setIsHidden] = useState(true);
-  const [isImageHidden, setIsImageHidden] = useState(true);
 
   const handleFileChange = (event: any) => {
     let file = event.target.files[0];
@@ -43,13 +50,14 @@ const ImageButton = (props: Props) => {
   }, [selectedModel]);
 
   return (
-    <div className='me-1.5 h-11 w-11 rounded-full bg-amber-500 py-2 font-bold shadow hover:bg-amber-700'>
+    <div
+      className='me-1.5 h-11 w-11 rounded-full bg-amber-500 py-2 font-bold shadow hover:bg-amber-700'
+      hidden={isHidden}
+    >
       <label
         htmlFor='input-image'
         title='Load image'
-        hidden={isHidden}
         onMouseEnter={() => setIsImageHidden(!userImages.length)}
-        onMouseLeave={() => setIsImageHidden(true)}
       >
         <input
           type='file'
