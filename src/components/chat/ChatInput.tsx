@@ -1,17 +1,7 @@
-import TextareaAutosize from 'react-textarea-autosize';
 import { useContext, useEffect, useState } from 'react';
-import {
-  ChatOptions,
-  ChatRequest,
-  HistoryMessage,
-  Model,
-} from '../../lib/types.ts';
-import {
-  getAbortController,
-  getChatApi,
-  getModelsAPI,
-  resetAbortController,
-} from '../../lib/service.ts';
+import TextareaAutosize from 'react-textarea-autosize';
+import HistoryContext from '../../context/HistoryContext.ts';
+import ToastContext from '../../context/ToastContext.ts';
 import {
   ERROR_CHAT_RESPONSE,
   ERROR_MODELS_LOADING,
@@ -19,12 +9,22 @@ import {
   INITIAL_SYSTEM_MESSAGE,
   WARNING_STOP_BY_USER,
 } from '../../lib/constants.ts';
+import {
+  getAbortController,
+  getChatApi,
+  getModelsAPI,
+  resetAbortController,
+} from '../../lib/service.ts';
+import {
+  ChatOptions,
+  ChatRequest,
+  HistoryMessage,
+  Model,
+} from '../../lib/types.ts';
 import { getModelShortName, updateHistory } from '../../lib/utils.ts';
-import HistoryContext from '../../context/HistoryContext.ts';
 import ActionButton from '../ui/ActionButton.tsx';
-import SettingsButton from '../ui/SettingsButton.tsx';
-import ToastContext from '../../context/ToastContext.ts';
 import ImageButton from '../ui/ImageButton.tsx';
+import SettingsButton from '../ui/SettingsButton.tsx';
 
 type Props = {
   models: Model[];

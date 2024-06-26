@@ -1,19 +1,19 @@
+import { useContext } from 'react';
+import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
+import historyContext from '../../context/HistoryContext.ts';
+import ToastContext from '../../context/ToastContext.ts';
+import {
+  ERROR_CHAT_RESPONSE,
+  ERROR_COPY_TO_CLIPBOARD,
+  SUCCESS_COPY_TO_CLIPBOARD,
+} from '../../lib/constants.ts';
+import { getAbortController, getChatApi } from '../../lib/service.ts';
 import {
   ChatOptions,
   ChatRequest,
   HistoryMessage,
   Model,
 } from '../../lib/types.ts';
-import { TbCopy, TbReload, TbSquareRoundedX } from 'react-icons/tb';
-import { useContext } from 'react';
-import historyContext from '../../context/HistoryContext.ts';
-import { getAbortController, getChatApi } from '../../lib/service.ts';
-import {
-  ERROR_CHAT_RESPONSE,
-  ERROR_COPY_TO_CLIPBOARD,
-  SUCCESS_COPY_TO_CLIPBOARD,
-} from '../../lib/constants.ts';
-import ToastContext from '../../context/ToastContext.ts';
 
 type Props = {
   message: HistoryMessage;

@@ -1,5 +1,5 @@
-import { getModelShortName } from '../../lib/utils.ts';
 import { Model } from '../../lib/types.ts';
+import { getModelShortName } from '../../lib/utils.ts';
 
 type Props = {
   models: Model[];

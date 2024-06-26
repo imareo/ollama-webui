@@ -1,13 +1,13 @@
-import { HistoryMessage } from '../../lib/types.ts';
-import Markdown from 'react-markdown';
-import { TbCopy, TbSquareRoundedX } from 'react-icons/tb';
 import { useContext } from 'react';
+import { TbCopy, TbSquareRoundedX } from 'react-icons/tb';
+import Markdown from 'react-markdown';
 import historyContext from '../../context/HistoryContext.ts';
+import ToastContext from '../../context/ToastContext.ts';
 import {
   ERROR_COPY_TO_CLIPBOARD,
   SUCCESS_COPY_TO_CLIPBOARD,
 } from '../../lib/constants.ts';
-import ToastContext from '../../context/ToastContext.ts';
+import { HistoryMessage } from '../../lib/types.ts';
 
 type Props = { message: HistoryMessage };
 const AssistantMessage = (props: Props) => {

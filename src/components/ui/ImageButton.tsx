@@ -1,10 +1,10 @@
-import { removeBase64Prefix } from '../../lib/utils.ts';
-import { Model } from '../../lib/types.ts';
 import { useContext, useEffect, useState } from 'react';
 import ToastContext from '../../context/ToastContext.ts';
 import { ERROR_LOADING_IMAGE } from '../../lib/constants.ts';
-import ImagePreview from './ImagePreview.tsx';
 import { useOutsideClick } from '../../lib/hooks.ts';
+import { Model } from '../../lib/types.ts';
+import { removeBase64Prefix } from '../../lib/utils.ts';
+import ImagePreview from './ImagePreview.tsx';
 
 type Props = {
   userImages: string[];
@@ -15,9 +15,9 @@ type Props = {
 };
 
 const ImageButton = (props: Props) => {
-  const { setAppToast } = useContext(ToastContext);
   const { userImages, selectedModel, setUserImages, showImage, setShowImage } =
     props;
+  const { setAppToast } = useContext(ToastContext);
   const [isHidden, setIsHidden] = useState(true);
 
   const ref = useOutsideClick<HTMLDivElement>(() => setShowImage(false));
@@ -59,6 +59,7 @@ const ImageButton = (props: Props) => {
     >
       <label
         htmlFor='input-image'
+        className='cursor-pointer'
         title='Load image'
         onMouseEnter={() => setShowImage(!!userImages.length)}
       >

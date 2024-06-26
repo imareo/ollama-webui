@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
-import ToastContext from '../../context/ToastContext.ts';
 import { toast, ToastContainer } from 'react-toastify';
+import ToastContext from '../../context/ToastContext.ts';
 import { EMPTY_TOAST } from '../../lib/constants.ts';
 
 const Toast = () => {

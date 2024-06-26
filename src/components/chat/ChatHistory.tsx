@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import HistoryContext from '../../context/HistoryContext.ts';
-import UserMessage from './UserMessage.tsx';
+import { ChatOptions, Model } from '../../lib/types.ts';
 import AssistantMessage from './AssistantMessage.tsx';
-import { Model, ChatOptions } from '../../lib/types.ts';
+import UserMessage from './UserMessage.tsx';
 
 type Props = {
   selectedModel?: Model;

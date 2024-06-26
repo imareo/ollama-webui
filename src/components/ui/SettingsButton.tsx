@@ -1,9 +1,9 @@
-import SystemMessage from '../chatSettings/SystemMessage.tsx';
-import Temperature from '../chatSettings/Temperature.tsx';
-import ContextSize from '../chatSettings/ContextSize.tsx';
-import Models from '../chatSettings/Models.tsx';
 import { useOutsideClick } from '../../lib/hooks.ts';
 import { ChatOptions, Model } from '../../lib/types.ts';
+import ContextSize from '../chatSettings/ContextSize.tsx';
+import Models from '../chatSettings/Models.tsx';
+import SystemMessage from '../chatSettings/SystemMessage.tsx';
+import Temperature from '../chatSettings/Temperature.tsx';
 
 type Props = {
   showSettings: boolean;

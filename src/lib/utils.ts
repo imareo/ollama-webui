@@ -1,6 +1,6 @@
-import { ChatResponse, HistoryMessage } from './types.ts';
 import { nanoid } from 'nanoid';
 import { getVramPercentAPI } from './service.ts';
+import { ChatResponse, HistoryMessage } from './types.ts';
 
 export const getModelShortName = (model?: string) => model?.split(':')[0];
 

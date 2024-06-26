@@ -1,7 +1,7 @@
+import { nanoid } from 'nanoid';
 import { API_URL } from './constants.ts';
 import { ChatRequest, ChatResponse, HistoryMessage, Model } from './types.ts';
 import { getResponseInfo } from './utils.ts';
-import { nanoid } from 'nanoid';
 
 let abortController = new AbortController();
 export const getAbortController = () => abortController;

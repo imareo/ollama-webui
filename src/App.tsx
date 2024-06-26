@@ -1,13 +1,13 @@
+import { useState } from 'react';
+import ChatHistory from './components/chat/ChatHistory.tsx';
+import ChatInput from './components/chat/ChatInput.tsx';
+import Toast from './components/ui/Toast.tsx';
+import HistoryContext from './context/HistoryContext.ts';
+import ToastContext from './context/ToastContext.ts';
+import { EMPTY_TOAST, INITIAL_OPTIONS } from './lib/constants.ts';
+import { ChatOptions, HistoryMessage, Model, MyToast } from './lib/types.ts';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import ChatInput from './components/chat/ChatInput.tsx';
-import ChatHistory from './components/chat/ChatHistory.tsx';
-import HistoryContext from './context/HistoryContext.ts';
-import { useState } from 'react';
-import { ChatOptions, HistoryMessage, Model, MyToast } from './lib/types.ts';
-import { EMPTY_TOAST, INITIAL_OPTIONS } from './lib/constants.ts';
-import ToastContext from './context/ToastContext.ts';
-import Toast from './components/ui/Toast.tsx';
 
 function App() {
   const [appToast, setAppToast] = useState<MyToast>(EMPTY_TOAST);
