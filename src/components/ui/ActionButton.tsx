@@ -12,7 +12,8 @@ const ActionButton = (props: Props) => {
   const disabled = userMessage.length === 0 && !loading;
 
   useHotkeys(
-    'ctrl+enter', () => !disabled ? onClick() : null,
+    'ctrl+enter',
+    () => !disabled && onClick(),
     { enableOnFormTags: ['textarea'] },
   );
 
