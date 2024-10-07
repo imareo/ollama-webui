@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import copy from 'copy-to-clipboard';
 import { TbCopy, TbSquareRoundedX } from 'react-icons/tb';
 import Markdown from 'react-markdown';
 import historyContext from '../../context/HistoryContext.ts';
@@ -17,7 +18,7 @@ const AssistantMessage = (props: Props) => {
 
   const handleCopyMessage = (content: string) => async () => {
     try {
-      await navigator.clipboard.writeText(content);
+      copy(content);
       setAppToast(SUCCESS_COPY_TO_CLIPBOARD);
     } catch (e: any) {
       setAppToast(ERROR_COPY_TO_CLIPBOARD);
