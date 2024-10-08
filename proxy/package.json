@@ -1,0 +1,16 @@
+{
+  "name": "proxy",
+  "version": "0.0.1",
+  "description": "proxy-server",
+  "main": "server.js",
+  "scripts": {
+    "proxy": "node ./server.cjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/http-proxy": "^10.0.0",
+    "@fastify/static": "^8.0.1",
+    "fastify": "^5.0.0"
+  }
+}
