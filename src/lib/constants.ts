@@ -1,6 +1,6 @@
 import { ChatOptions, MyToast } from './types.ts';
 
-export const API_URL = 'http://localhost:11434/api';
+export const API_URL = window.location.href + 'api';
 
 export const INITIAL_SYSTEM_MESSAGE =
   'you typescript and react developer. ' +
