@@ -23,8 +23,8 @@ const ContextSize = (props: Props) => {
         type='range'
         className='w-54 mx-2'
         min={2048}
-        max={8192}
-        step={1024}
+        max={32768}
+        step={2048}
         value={options.num_ctx}
         onChange={handleContextChange}
       />
