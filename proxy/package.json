@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "proxy-server",
   "scripts": {
-    "proxy": "node ./server.cjs"
+    "proxy": "node --env-file .env ./server.cjs"
   },
   "author": "",
   "license": "ISC",

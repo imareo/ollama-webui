@@ -10,7 +10,7 @@ const server = Fastify({
   },
 });
 
-const UPSTREAM_URL = 'http://your ollama server ip:port/api';
+const UPSTREAM_URL = `http://${process.env.OLLAMA_HOST_PORT}/api`;
 const STATIC_ROOT = path.join(__dirname, '../dist');
 
 const getHostAddress = () => {
