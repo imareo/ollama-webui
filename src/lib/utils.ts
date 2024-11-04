@@ -46,3 +46,7 @@ export const updateHistory = (
 
   return updatedHistory;
 };
+
+export const hasAny = <T>(arr1: Array<T>, arr2: Array<T>): boolean => {
+  return arr1.some((el: T) => arr2.includes(el));
+};

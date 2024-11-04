@@ -46,3 +46,5 @@ export const ERROR_LOADING_IMAGE: MyToast = {
   message: 'Wrong file type, must use jpg/png',
   type: 'error',
 };
+
+export const VISION_MODELS: Array<string> = ['mllama', 'clip'];

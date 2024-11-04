@@ -1,5 +1,6 @@
+import { VISION_MODELS } from '../../lib/constants.ts';
 import { Model } from '../../lib/types.ts';
-import { getModelShortName } from '../../lib/utils.ts';
+import { getModelShortName, hasAny } from '../../lib/utils.ts';
 
 type Props = {
   models: Model[];
@@ -13,7 +14,7 @@ const Models = (props: Props) => {
 
   const handleModelChange = (model: Model) => () => {
     setSelectedModel(model);
-    if (!model.details.families.includes('clip')) {
+    if (!hasAny(model.details.families, VISION_MODELS)) {
       setUserImages([]);
     }
   };
@@ -30,7 +31,7 @@ const Models = (props: Props) => {
           >
             <div className='mx-2 my-1'>{getModelShortName(model.name)}</div>
             <div className='ml-auto flex flex-row justify-end'>
-              {model.details.families.includes('clip') && (
+              {hasAny(model.details.families, VISION_MODELS) && (
                 <div
                   className='my-1 me-1 rounded-full bg-blue-500 px-2 py-0.5 text-sm font-semibold text-white'
                   style={{ fontSize: '0.6em' }}

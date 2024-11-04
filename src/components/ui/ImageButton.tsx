@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import ToastContext from '../../context/ToastContext.ts';
-import { ERROR_LOADING_IMAGE } from '../../lib/constants.ts';
+import { ERROR_LOADING_IMAGE, VISION_MODELS } from '../../lib/constants.ts';
 import { useOutsideClick } from '../../lib/hooks.ts';
 import { Model } from '../../lib/types.ts';
-import { removeBase64Prefix } from '../../lib/utils.ts';
+import { hasAny, removeBase64Prefix } from '../../lib/utils.ts';
 import ImagePreview from './ImagePreview.tsx';
 
 type Props = {
@@ -46,7 +46,8 @@ const ImageButton = (props: Props) => {
   };
 
   useEffect(() => {
-    const isMultimodal = selectedModel?.details.families.includes('clip');
+    const isMultimodal =
+      !!selectedModel && hasAny(selectedModel.details.families, VISION_MODELS);
     setIsHidden(!isMultimodal);
   }, [selectedModel]);
 
