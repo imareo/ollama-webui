@@ -14,4 +14,5 @@ export default defineConfig({
     open: true,
   },
   mode: 'production',
+  esbuild: {legalComments: 'none'}
 });

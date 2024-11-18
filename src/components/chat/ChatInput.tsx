@@ -9,8 +9,18 @@ import {
   INITIAL_SYSTEM_MESSAGE,
   WARNING_STOP_BY_USER,
 } from '../../lib/constants.ts';
-import { getAbortController, getChatApi, getModelsAPI, resetAbortController } from '../../lib/service.ts';
-import { ChatOptions, ChatRequest, HistoryMessage, Model } from '../../lib/types.ts';
+import {
+  getAbortController,
+  getChatApi,
+  getModelsAPI,
+  resetAbortController,
+} from '../../lib/service.ts';
+import {
+  ChatOptions,
+  ChatRequest,
+  HistoryMessage,
+  Model,
+} from '../../lib/types.ts';
 import { getModelShortName, updateHistory } from '../../lib/utils.ts';
 import ActionButton from '../ui/ActionButton.tsx';
 import ImageButton from '../ui/ImageButton.tsx';
@@ -42,7 +52,7 @@ const ChatInput = (props: Props) => {
   const { history, setHistory } = useContext(HistoryContext);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [systemMessage, setSystemMessage] = useState<string>(
-    INITIAL_SYSTEM_MESSAGE,
+    INITIAL_SYSTEM_MESSAGE
   );
   const [userMessage, setUserMessage] = useState<string>('');
   const [userImages, setUserImages] = useState<string[]>([]);
@@ -68,7 +78,7 @@ const ChatInput = (props: Props) => {
       } else {
         localStorage.setItem(
           'systemMessage',
-          JSON.stringify(INITIAL_SYSTEM_MESSAGE),
+          JSON.stringify(INITIAL_SYSTEM_MESSAGE)
         );
         setSystemMessage(INITIAL_SYSTEM_MESSAGE);
       }
@@ -110,7 +120,7 @@ const ChatInput = (props: Props) => {
         history,
         systemMessage,
         userMessage,
-        userImages,
+        userImages
       );
 
       setHistory(updatedHistory);
@@ -133,12 +143,12 @@ const ChatInput = (props: Props) => {
   }, []);
 
   return (
-    <div className="fixed bottom-6 flex w-full flex-row items-end justify-between pe-16">
+    <div className='fixed bottom-6 flex w-full flex-row items-end justify-between pe-16'>
       <TextareaAutosize
-        id="input-area"
-        className="me-1.5 flex-auto resize-none rounded-3xl border-2 px-4 py-2"
+        id='input-area'
+        className='me-1.5 flex-auto resize-none rounded-3xl border-2 px-4 py-2'
         maxRows={10}
-        placeholder={`Ask model ${getModelShortName(selectedModel?.name)}, temp: ${options?.temperature}, ctx: ${options?.num_ctx}. Can use hotkey 'ctrl+enter' for send`}
+        placeholder={`Model: ${getModelShortName(selectedModel?.name)}, temp: ${options?.temperature}, ctx: ${options?.num_ctx}. 'ctrl+enter' for send`}
         value={userMessage}
         onChange={(event) => handleInputChange(event)}
       />

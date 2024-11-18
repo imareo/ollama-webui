@@ -36,10 +36,23 @@ server.register(fastifyStatic, {
   root: STATIC_ROOT,
 });
 
+process.on('SIGINT', () => {
+  console.clear();
+  server.close((err) => {
+    if (err) {
+      console.error('Error during shutdown:', err);
+      process.exit(1);
+    }
+    console.log('Proxy server has been shut down successfully');
+    process.exit(0);
+  });
+});
+
 server.listen({ port: 3000, host: getHostAddress() }, (err) => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
   console.log(`Server start at http://${getHostAddress()}:${3000}`);
+  console.log('press Ctrl+C for quit');
 });
