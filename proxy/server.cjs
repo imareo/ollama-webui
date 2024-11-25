@@ -50,7 +50,7 @@ process.on('SIGINT', () => {
 
 server.listen({ port: 3000, host: getHostAddress() }, (err) => {
   if (err) {
-    console.error(err);
+    console.error('Failed to start proxy server:', err);
     process.exit(1);
   }
   console.log(`Server start at http://${getHostAddress()}:${3000}`);

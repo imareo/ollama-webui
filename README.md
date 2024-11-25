@@ -13,17 +13,7 @@ This is a sample React project can work with text and multimodal llm.
 ### Requirements
 
 1. Install [Ollama](https://ollama.com/download)
-2. Set ollama.service environments for cors:
-   ```bash
-   cd /etc/systemd/system
-   sudo vi ollama.service
-   
-   [Service]  
-   Environment="OLLAMA_ORIGINS=*"
-   Environment="OLLAMA_HOST=http://0.0.0.0:11434"
-   
-   sudo systemctl daemon-reload && sudo systemctl restart ollama.service
-   ```
+2. Set ollama cors settings - use `./ollama/ollama_cors.sh` script
 3. Select and set up a [model(s)](https://ollama.com/library)
 
 ### Getting Started
@@ -33,7 +23,6 @@ This is a sample React project can work with text and multimodal llm.
 3. Create /proxy/.env file with `OLLAMA_HOST_PORT=<ollama ip:port>`
 4. Run dev: `npm run dev`
 5. Build dist: `npm run build`
-6. For update all models: `npm run model-update`
 
 
 ### License
