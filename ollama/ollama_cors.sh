@@ -23,4 +23,5 @@ else
     done
 
     sudo systemctl daemon-reload && sudo systemctl restart ollama.service
+    echo "Ollama service restarted"
 fi

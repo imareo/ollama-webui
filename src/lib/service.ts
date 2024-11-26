@@ -68,7 +68,16 @@ export const getChatApi = async ({
 
 export const getModelsAPI = async (): Promise<Model[]> => {
   const response = await fetch(`${API_URL}/tags`);
-  const data = await response.json();
+  const data: { models: Array<Model> } = await response.json();
+
+  data.models.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    if (a.details.parameter_size < b.details.parameter_size) return -1;
+    if (a.details.parameter_size > b.details.parameter_size) return 1;
+    return 0;
+  });
+
   return data.models;
 };
 
