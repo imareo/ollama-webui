@@ -6,7 +6,7 @@ This is a sample React project can work with text and multimodal llm.
 
 ### Features
 
-* Built with React 18.x
+* Built with React 19.x
 * Supports ES6 syntax and TSX
 * Simple proxy server for API request forwarding
 
