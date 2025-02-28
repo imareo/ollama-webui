@@ -21,7 +21,7 @@ const Temperature = (props: Props) => {
       <small className='ms-2'>{`temperature: ${options.temperature}`}</small>
       <input
         type='range'
-        className='w-50 mx-2'
+        className='w-84 mx-2'
         min={0}
         max={1}
         step={0.1}

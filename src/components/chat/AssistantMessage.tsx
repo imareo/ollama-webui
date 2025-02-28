@@ -31,9 +31,11 @@ const AssistantMessage = (props: Props) => {
 
   return (
     <div className='col-span-11 rounded-xl bg-green-50 p-2'>
-      <Markdown className='prose max-w-none px-3 pt-3'>
-        {message.message.content}
-      </Markdown>
+      <div className='prose max-w-none px-3 pt-3'>
+        <Markdown>
+          {message.message.content}
+        </Markdown>
+      </div>
       <div className='flex pt-2 text-end text-slate-500'>
         <div className='grow justify-start self-center pl-1 text-start text-sm'>
           {message.info}

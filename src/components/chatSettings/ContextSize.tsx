@@ -21,7 +21,7 @@ const ContextSize = (props: Props) => {
       <small className='ms-2'>{`context: ${options.num_ctx}`}</small>
       <input
         type='range'
-        className='w-54 mx-2'
+        className='w-84 mx-2'
         min={2048}
         max={32768}
         step={2048}

@@ -16,7 +16,7 @@ const SystemMessage = (props: Props) => {
       <small className='m-2'>system message:</small>
       <textarea
         id='system-message'
-        className='w-54 mx-2 resize-none text-sm'
+        className='w-83 mx-2 resize-none text-sm'
         rows={7}
         value={systemMessage}
         onChange={handleSystemMessageChange}

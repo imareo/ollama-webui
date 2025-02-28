@@ -41,14 +41,14 @@ const Models = (props: Props) => {
                 </div>
               )}
               <div
-                className='bg--600 my-1 me-1 rounded-full bg-pink-800 px-2 py-0.5 text-sm font-semibold text-white'
+                className='bg--600 my-1 me-1 rounded-full bg-pink-800 px-2 pt-1.5 text-sm font-semibold text-white'
                 style={{ fontSize: '0.6em' }}
                 title='parameter size'
               >
                 {model.details.parameter_size}
               </div>
               <div
-                className='my-1 me-2 rounded-full bg-gray-600 px-2 py-0.5 text-sm font-semibold text-white'
+                className='my-1 me-2 rounded-full bg-gray-600 px-2 pt-1.5 text-sm font-semibold text-white'
                 style={{ fontSize: '0.6em' }}
                 title='quantization level'
               >
